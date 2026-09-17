@@ -1,3 +1,4 @@
+import os
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
@@ -299,10 +300,12 @@ class Handler(BaseHTTPRequestHandler):
                 404
             )
 
-print("Sayyadi Backend yana aiki a port 8001 🚀")
+print(f"Sayyadi Backend yana aiki a port {PORT} 🚀")
+
+PORT = int(os.environ.get("PORT", "8001"))
 
 server = HTTPServer(
-    ("localhost", 8001),
+    ("0.0.0.0", PORT),
     Handler
 )
 
