@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - Sayyadi Social</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f2f2f2;
+margin:0;
+}
+.header{
+background:#08a85b;
+color:white;
+padding:20px;
+font-size:24px;
+font-weight:bold;
+}
+.nav{
+padding:15px;
+background:white;
+}
+button{
+padding:10px 15px;
+margin:4px;
+border:0;
+border-radius:8px;
+cursor:pointer;
+}
+.box{
+background:white;
+max-width:500px;
+margin:30px auto;
+padding:25px;
+border-radius:15px;
+text-align:center;
+}
+.avatar{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+background:#ddd;
+margin-bottom:15px;
+}
+.email{
+color:#666;
+}
+.logout{
+background:#d9534f;
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">🚀 Sayyadi Social</div>
+
+<div class="nav">
+<button onclick="location.href='index.html'">🏠 Home</button>
+<button onclick="location.href='profile.html'">👤 Profile</button>
+<button onclick="location.href='community.html'">👥 Community</button>
+<button onclick="location.href='friends.html'">👥 Friends</button>
+<button onclick="location.href='chat.html'">💬 Chat</button>
+</div>
+
+<div class="box">
+
+<img id="avatar" class="avatar" src="" alt="Profile">
+
+<h2 id="name">Loading...</h2>
+
+<p id="email" class="email">Loading...</p>
+
+<div style="display:flex;justify-content:center;gap:30px;margin:20px 0;">
+  <div>
+    <strong id="followers">0</strong>
+    <br>
+    Followers
+  </div>
+
+  <div>
+    <strong id="following">0</strong>
+    <br>
+    Following
+  </div>
+</div>
+
+<input type="file" id="photoInput" accept="image/*">
+
+<br><br>
+
+<button onclick="logout()" class="logout">🚪 Logout</button>
+
+</div>
+
+<script>
+
+async function loadProfile(){
+
+const email=localStorage.getItem("sayyadiEmail");
+
+if(!email){
+location.href="login.html";
+return;
+}
+
+try{
+
+const response=await fetch("http://localhost:8001/api/users");
+const users=await response.json();
+
+const user=users.find(u=>u.email===email);
+
+if(user){
+
+document.getElementById("name").textContent=user.name;
+document.getElementById("email").textContent=user.email;
+
+}else{
+
+document.getElementById("name").textContent="User";
+document.getElementById("email").textContent=email;
+
+}
+
+}catch(error){
+
+document.getElementById("name").textContent=
+localStorage.getItem("sayyadiName") || "User";
+
+document.getElementById("email").textContent=email;
+
+}
+
+const followsResponse = await fetch(
+"http://localhost:8001/api/follows"
+);
+
+const follows = await followsResponse.json();
+
+const followers = follows.filter(
+f => f.following === email
+).length;
+
+const following = follows.filter(
+f => f.follower === email
+).length;
+
+document.getElementById("followers").textContent = followers;
+document.getElementById("following").textContent = following;
+
+const photo=localStorage.getItem("sayyadiPhoto");
+
+if(photo){
+document.getElementById("avatar").src=photo;
+}
+
+}
+
+document.getElementById("photoInput").addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+localStorage.setItem("sayyadiPhoto",e.target.result);
+
+document.getElementById("avatar").src=e.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+function logout(){
+
+localStorage.removeItem("sayyadiName");
+localStorage.removeItem("sayyadiEmail");
+
+location.href="login.html";
+
+}
+
+loadProfile();
+
+</script>
+
+</body>
+</html>

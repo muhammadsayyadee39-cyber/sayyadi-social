@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sayyadi Friends</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .user {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    button {
+      border: none;
+      padding: 9px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .follow {
+      background: #111;
+      color: white;
+    }
+
+    .chat {
+      background: #ddd;
+      color: #111;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  👥 Sayyadi Friends
+</header>
+
+<div class="container">
+  <div id="users">Ana loda users...</div>
+</div>
+
+<script>
+
+const API = "http://localhost:8001";
+
+const myEmail = localStorage.getItem("sayyadiEmail");
+
+async function loadFriends() {
+
+  const box = document.getElementById("users");
+
+  if (!myEmail) {
+    box.innerHTML = "<p>Ka fara Login.</p>";
+    return;
+  }
+
+  try {
+
+    const usersResponse = await fetch(`${API}/api/users`);
+    const users = await usersResponse.json();
+
+    const followsResponse = await fetch(`${API}/api/follows`);
+    const follows = await followsResponse.json();
+
+    box.innerHTML = "";
+
+    const otherUsers = users.filter(
+      user => user.email !== myEmail
+    );
+
+    if (otherUsers.length === 0) {
+      box.innerHTML = "<p>Babu sauran users tukuna.</p>";
+      return;
+    }
+
+    otherUsers.forEach(user => {
+
+      const isFollowing = follows.some(
+        f =>
+          f.follower === myEmail &&
+          f.following === user.email
+      );
+
+      const div = document.createElement("div");
+      div.className = "user";
+
+      const name = document.createElement("strong");
+      name.textContent = user.name;
+
+      const buttons = document.createElement("div");
+      buttons.className = "buttons";
+
+      const followButton = document.createElement("button");
+      followButton.className = "follow";
+      followButton.textContent =
+        isFollowing ? "Unfollow" : "Follow";
+
+      followButton.onclick = () =>
+        followUser(user.email);
+
+      const chatButton = document.createElement("button");
+      chatButton.className = "chat";
+      chatButton.textContent = "💬 Chat";
+
+      chatButton.onclick = () => {
+        window.location.href =
+          `userchat.html?user=${encodeURIComponent(user.email)}`;
+      };
+
+      buttons.appendChild(followButton);
+      buttons.appendChild(chatButton);
+
+      div.appendChild(name);
+      div.appendChild(buttons);
+
+      box.appendChild(div);
+
+    });
+
+  } catch (error) {
+
+    box.innerHTML =
+      "<p>An samu matsala wajen ɗauko Friends.</p>";
+
+    console.error(error);
+  }
+}
+
+async function followUser(email) {
+
+  try {
+
+    const response = await fetch(`${API}/api/follow`, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        follower: myEmail,
+        following: email
+      })
+
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.error || "An samu kuskure.");
+      return;
+    }
+
+    loadFriends();
+
+  } catch (error) {
+
+    alert("An kasa haɗawa da backend.");
+    console.error(error);
+  }
+}
+
+loadFriends();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+database.json
+server.log
+__pycache__/
+*.pyc
+*-backup.html
+*-backup.py

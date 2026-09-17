@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sayyadi Chat</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+    }
+
+    .header {
+      background: #00b86b;
+      color: white;
+      padding: 20px;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .chat {
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .message {
+      background: #e8f5e9;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .input {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      background: #00b86b;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #00a85a;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">Sayyadi Chat</div>
+
+  <div class="chat">
+    <div class="message">
+      <b>Sayyadi:</b> Sannu! Barka da zuwa Chat.
+    </div>
+
+    <div id="messages"></div>
+
+    <div class="input">
+      <input id="messageInput" type="text" placeholder="Rubuta saƙonka...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <a href="index.html">Komawa Home</a>
+  </div>
+
+  <script>
+    function sendMessage() {
+      let input = document.getElementById("messageInput");
+      let text = input.value.trim();
+
+      if (text === "") return;
+
+      let message = document.createElement("div");
+      message.className = "message";
+      message.innerHTML = "<b>Kai:</b> " + text;
+
+      document.getElementById("messages").appendChild(message);
+      input.value = "";
+    }
+  </script>
+
+</body>
+</html>

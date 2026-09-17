@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sayyadi Chat</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    #chat {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      min-height: 400px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .message {
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background: #eee;
+    }
+
+    .mine {
+      text-align: right;
+      background: #d9fdd3;
+    }
+
+    #sendBox {
+      max-width: 700px;
+      margin: auto;
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #111;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  💬 Sayyadi Social Chat
+</header>
+
+<div id="chat">
+  Ana loda saƙonni...
+</div>
+
+<div id="sendBox">
+  <input id="messageInput" type="text" placeholder="Rubuta saƙonka...">
+  <button onclick="sendMessage()">Aika</button>
+</div>
+
+<script>
+
+const API = "http://localhost:8001";
+
+const myEmail = localStorage.getItem("sayyadiEmail");
+
+// Za mu karɓi wanda ake chatting da shi daga URL
+const receiver = new URLSearchParams(window.location.search).get("user");
+
+async function loadMessages() {
+
+  if (!myEmail || !receiver) {
+    document.getElementById("chat").innerHTML =
+      "<p>Ba a zaɓi wanda za a yi chat da shi ba.</p>";
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      `${API}/api/messages?user1=${encodeURIComponent(myEmail)}&user2=${encodeURIComponent(receiver)}`
+    );
+
+    const messages = await response.json();
+
+    const chat = document.getElementById("chat");
+
+    chat.innerHTML = "";
+
+    if (messages.length === 0) {
+      chat.innerHTML = "<p>Babu saƙonni tukuna 💬</p>";
+      return;
+    }
+
+    messages.forEach(message => {
+
+      const div = document.createElement("div");
+
+      div.className = "message";
+
+      if (message.sender === myEmail) {
+        div.classList.add("mine");
+      }
+
+      div.textContent =
+        `${message.sender}: ${message.text}`;
+
+      chat.appendChild(div);
+    });
+
+    chat.scrollTop = chat.scrollHeight;
+
+  } catch (error) {
+
+    document.getElementById("chat").innerHTML =
+      "<p>An samu matsala wajen ɗauko saƙonni.</p>";
+
+    console.error(error);
+  }
+}
+
+async function sendMessage() {
+
+  const input = document.getElementById("messageInput");
+  const text = input.value.trim();
+
+  if (!text) {
+    return;
+  }
+
+  if (!myEmail || !receiver) {
+    alert("Ba a san wanda za a aika wa saƙon ba.");
+    return;
+  }
+
+  try {
+
+    const response = await fetch(`${API}/api/message`, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        sender: myEmail,
+        receiver: receiver,
+        text: text
+      })
+
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.error || "An samu kuskure.");
+      return;
+    }
+
+    input.value = "";
+
+    loadMessages();
+
+  } catch (error) {
+
+    alert("An kasa haɗawa da backend.");
+    console.error(error);
+  }
+}
+
+document
+  .getElementById("messageInput")
+  .addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+
+  });
+
+loadMessages();
+
+setInterval(loadMessages, 3000);
+
+</script>
+
+</body>
+</html>

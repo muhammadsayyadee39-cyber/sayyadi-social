@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayyadi Search</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f4f7}
+.header{background:#00b86b;color:white;padding:18px;font-size:24px;font-weight:bold}
+.box{max-width:650px;margin:25px auto;background:white;padding:20px;border-radius:15px}
+input{width:65%;padding:12px;border:1px solid #ccc;border-radius:8px}
+button{background:#00b86b;color:white;border:0;padding:12px 18px;border-radius:8px}
+.result{background:#e8f5e9;padding:14px;margin:10px 0;border-radius:10px}
+a{display:block;margin-top:20px;color:#00a85a}
+</style>
+</head>
+<body>
+
+<div class="header">🔍 Sayyadi Search</div>
+
+<div class="box">
+<h2>Nemo a Sayyadi</h2>
+
+<input id="searchInput" type="text" placeholder="Nemo user ko post...">
+<button onclick="search()">Search 🔍</button>
+
+<div id="results"></div>
+
+<a href="index.html">🏠 Komawa Home</a>
+</div>
+
+<script>
+function search(){
+let query = document.getElementById("searchInput").value.trim().toLowerCase();
+let results = document.getElementById("results");
+
+if(!query){
+results.innerHTML = "<p>Rubuta abin da kake nema.</p>";
+return;
+}
+
+let users = [
+"Sayyadi",
+"New User",
+"Community Member"
+];
+
+let posts = [
+"Maraba da zuwa Sayyadi Social! 🚀",
+"Sabon post daga Sayyadi"
+];
+
+let found = [];
+
+users.forEach(function(user){
+if(user.toLowerCase().includes(query)){
+found.push("👤 User: " + user);
+}
+});
+
+posts.forEach(function(post){
+if(post.toLowerCase().includes(query)){
+found.push("📝 Post: " + post);
+}
+});
+
+if(found.length === 0){
+results.innerHTML = "<p>Ba a sami sakamako ba.</p>";
+return;
+}
+
+results.innerHTML = found.map(function(item){
+return '<div class="result">' + item + '</div>';
+}).join("");
+}
+</script>
+
+</body>
+</html>

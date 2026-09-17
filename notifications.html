@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sayyadi Notifications</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .notification {
+      background: white;
+      padding: 16px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #666;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  🔔 Sayyadi Notifications
+</header>
+
+<div class="container">
+  <div id="notifications">
+    Ana loda notifications...
+  </div>
+</div>
+
+<script>
+
+const API = "http://localhost:8001";
+const myEmail = localStorage.getItem("sayyadiEmail");
+
+async function loadNotifications() {
+
+  const box = document.getElementById("notifications");
+
+  if (!myEmail) {
+    box.innerHTML = '<p class="empty">Ka fara Login.</p>';
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      `${API}/api/notifications?user=${encodeURIComponent(myEmail)}`
+    );
+
+    const notifications = await response.json();
+
+    if (!response.ok) {
+      box.innerHTML = '<p class="empty">An samu matsala.</p>';
+      return;
+    }
+
+    box.innerHTML = "";
+
+    if (notifications.length === 0) {
+      box.innerHTML =
+        '<p class="empty">Babu notification tukuna 🔔</p>';
+      return;
+    }
+
+    notifications.slice().reverse().forEach(notification => {
+
+      const div = document.createElement("div");
+      div.className = "notification";
+
+      const text = document.createElement("div");
+      text.textContent =
+        notification.text || "Sabuwar notification 🔔";
+
+      const from = document.createElement("small");
+      from.textContent =
+        notification.from
+          ? `Daga: ${notification.from}`
+          : "";
+
+      div.appendChild(text);
+      div.appendChild(document.createElement("br"));
+      div.appendChild(from);
+
+      box.appendChild(div);
+    });
+
+  } catch (error) {
+
+    box.innerHTML =
+      '<p class="empty">An kasa haɗawa da backend.</p>';
+
+    console.error(error);
+  }
+}
+
+loadNotifications();
+
+</script>
+
+</body>
+</html>

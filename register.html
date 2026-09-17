@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayyadi Register</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f4f7}
+.box{max-width:450px;margin:60px auto;background:white;padding:25px;border-radius:15px}
+h1{color:#00b86b;text-align:center}
+input{width:94%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px}
+button{width:100%;background:#00b86b;color:white;border:0;padding:13px;border-radius:8px;margin-top:10px}
+a{display:block;text-align:center;margin-top:20px;color:#00a85a}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h1>🚀 Sayyadi Social</h1>
+<h2>Ƙirƙiri Account</h2>
+
+<input id="name" placeholder="Sunanka">
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="register()">Register 👤</button>
+
+<a href="login.html">Ina da account</a>
+</div>
+
+<script>
+async function register(){
+
+let name=document.getElementById("name").value.trim();
+let email=document.getElementById("email").value.trim();
+let password=document.getElementById("password").value;
+
+if(!name || !email || !password){
+alert("Cika dukkan bayanan farko.");
+return;
+}
+
+try{
+
+let response=await fetch("http://localhost:8001/api/register",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+name:name,
+email:email,
+password:password
+})
+});
+
+let data=await response.json();
+
+localStorage.setItem("sayyadiName",name);
+localStorage.setItem("sayyadiEmail",email);
+localStorage.setItem("sayyadiPassword",password);
+
+alert(data.message || "An ƙirƙiri account! 🎉");
+location.href="login.html";
+
+}catch(error){
+
+alert("Backend bai haɗu ba. Ka tabbatar backend yana aiki a port 8001.");
+
+}
+}
+</script>
+
+</body>
+</html>
