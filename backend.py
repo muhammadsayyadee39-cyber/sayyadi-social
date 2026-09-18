@@ -7,6 +7,11 @@ from urllib.parse import urlparse, parse_qs
 DB_FILE = "database.json"
 
 def load_db():
+    if not os.path.exists(DB_FILE):
+        db = {"users": [], "posts": [], "messages": [], "notifications": [], "follows": []}
+        with open(DB_FILE, "w") as f:
+            json.dump(db, f, indent=2)
+        return db
     with open(DB_FILE, "r") as f:
         db = json.load(f)
 
