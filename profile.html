@@ -110,7 +110,7 @@ return;
 
 try{
 
-const response=await fetch("http://localhost:8001/api/users");
+const response=await fetch("https://sayyadi-social.onrender.com/api/users");
 const users=await response.json();
 
 const user=users.find(u=>u.email===email);
@@ -137,7 +137,7 @@ document.getElementById("email").textContent=email;
 }
 
 const followsResponse = await fetch(
-"http://localhost:8001/api/follows"
+"https://sayyadi-social.onrender.com/api/follows"
 );
 
 const follows = await followsResponse.json();
