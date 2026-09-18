@@ -1,4 +1,5 @@
 import os
+PORT = int(os.environ.get("PORT", "8001"))
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
@@ -302,7 +303,6 @@ class Handler(BaseHTTPRequestHandler):
 
 print(f"Sayyadi Backend yana aiki a port {PORT} 🚀")
 
-PORT = int(os.environ.get("PORT", "8001"))
 
 server = HTTPServer(
     ("0.0.0.0", PORT),
