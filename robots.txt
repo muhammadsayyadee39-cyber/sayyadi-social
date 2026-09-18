@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://muhammadsayyadee39-cyber.github.io/sayyadi-social/sitemap.xml
