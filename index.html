@@ -1,214 +1,73 @@
 <!DOCTYPE html>
 <html lang="ha">
 <head>
-<meta name="description" content="PS Chat - Social platform for connecting with friends, sharing posts, chatting and building a community.">
-<meta name="keywords" content="PS Chat, social network, friends, chat, community, posts">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://muhammadsayyadee39-cyber.github.io/sayyadi-social/">
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PS Chat</title>
-
+<meta name="description" content="PS Chat - Prince Studio social platform.">
+<title>PS Chat — Prince Studio</title>
 <style>
-body{margin:0;font-family:Arial;background:#f2f4f7}
-.header{background:#00b86b;color:white;padding:18px;font-size:24px;font-weight:bold}
-.nav{background:white;padding:12px;display:flex;gap:8px;flex-wrap:wrap}
-button{background:#00b86b;color:white;border:0;padding:10px 14px;border-radius:8px;cursor:pointer}
-.container{max-width:650px;margin:25px auto}
-.box,.post{background:white;padding:20px;border-radius:15px;margin-bottom:20px}
-textarea{width:95%;height:90px;padding:12px;border:1px solid #ccc;border-radius:10px}
-.commentInput{width:65%;padding:10px;border:1px solid #ccc;border-radius:8px}
-.comment{background:#f1f1f1;padding:8px;margin-top:8px;border-radius:8px}
+:root{--bg:#050505;--panel:#0d0d0d;--panel2:#121212;--line:#272727;--gold:#d4af37;--muted:#a9a9a9;--green:#25d366}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:#f5f5f5;font-family:Arial,sans-serif}
+.header{height:74px;background:#080808;border-bottom:1px solid #3b2f12;display:flex;align-items:center;justify-content:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 4px 18px rgba(0,0,0,.45)}
+.ps-logo{width:52px;height:52px;object-fit:contain;border-radius:12px;background:#fff;display:block}.brand{font-size:24px;font-weight:800;color:var(--gold)}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:18px;max-width:1280px;margin:18px auto;padding:0 16px}
+.sidebar,.rightbar{position:sticky;top:92px;height:max-content}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:15px}
+.menu{display:flex;flex-direction:column;gap:7px}.menu button{width:100%;text-align:left;background:transparent;color:#eee;border:1px solid transparent;padding:11px 12px;border-radius:10px;cursor:pointer;font-weight:700}.menu button:hover,.menu button.active{background:#18150e;border-color:#4a3b14;color:var(--gold)}
+.gold{color:var(--gold)}.section-title{margin:0 0 12px;color:var(--gold);font-size:16px}.online{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #202020}.dot{width:9px;height:9px;background:var(--green);border-radius:50%;display:inline-block}.tag{display:inline-block;color:var(--gold);margin:4px 4px 4px 0}
+.feed{min-width:0}.composer{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}.composer textarea{width:100%;min-height:100px;resize:vertical;background:#080808;color:#fff;border:1px solid #3a2f16;border-radius:12px;padding:12px;outline:none}.composer textarea:focus{border-color:var(--gold)}
+.actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}.btn{background:linear-gradient(135deg,#d4af37,#b8860b);color:#080808;border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.btn.secondary{background:#181818;color:#ddd;border:1px solid #333}.btn:hover{filter:brightness(1.08)}
+.post{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}.post-head{display:flex;align-items:center;gap:10px}.avatar{width:40px;height:40px;border-radius:50%;background:#19150a;border:1px solid #594716;display:grid;place-items:center;color:var(--gold);font-weight:800}.post-name{font-weight:800}.post-time{font-size:12px;color:var(--muted)}.post-text{white-space:pre-wrap;line-height:1.55;color:#eee}.post-actions{display:flex;gap:8px;border-top:1px solid #222;margin-top:12px;padding-top:12px;flex-wrap:wrap}.comment-row{display:flex;gap:8px;margin-top:10px}.comment-row input{flex:1;min-width:0;background:#080808;color:#fff;border:1px solid #333;border-radius:9px;padding:10px}.comment{background:#171717;border-left:3px solid var(--gold);border-radius:8px;padding:8px 10px;margin-top:8px;color:#ddd}.empty{text-align:center;color:var(--muted);padding:25px}.footer-note{color:#777;font-size:12px;text-align:center;margin:18px}
+@media(max-width:1000px){.app{grid-template-columns:190px minmax(0,1fr)}.rightbar{display:none}}
+@media(max-width:680px){.header{height:64px}.ps-logo{width:44px;height:44px}.brand{font-size:20px}.app{display:block;margin:10px auto;padding:0 10px}.sidebar{position:static;margin-bottom:10px}.menu{flex-direction:row;overflow:auto}.menu button{white-space:nowrap;width:auto}.panel{padding:11px}.composer,.post{padding:13px}}
 </style>
 </head>
-
 <body>
-
-<div class="header">🚀 PS Chat</div>
-
-<div class="nav">
-<button onclick="location.href='index.html'">🏠 Home</button>
-<button onclick="location.href='profile.html'">👤 Profile</button>
-<button onclick="location.href='community.html'">👥 Community</button>
-<button onclick="location.href='friends.html'">👥 Friends</button>
-<button onclick="location.href='chat.html'">💬 Chat</button>
-<button onclick="location.href='search.html'">🔍 Search</button>
-<button onclick="location.href='notifications.html'">🔔 Notifications</button>
-<button onclick="logout()">🚪 Logout</button>
+<header class="header"><img class="ps-logo" src="ps-logo.png" alt="Prince Studio"><div class="brand">PS Chat</div></header>
+<div class="app">
+<aside class="sidebar">
+  <div class="panel menu">
+    <button class="active" onclick="location.href='index.html'">🏠 Home</button>
+    <button onclick="location.href='profile.html'">👤 Profile</button>
+    <button onclick="location.href='community.html'">👥 Community</button>
+    <button onclick="location.href='friends.html'">🤝 Friends</button>
+    <button onclick="location.href='userchat.html'">💬 Chat</button>
+    <button onclick="location.href='search.html'">🔎 Search</button>
+    <button onclick="location.href='notifications.html'">🔔 Notifications</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+</aside>
+<main class="feed">
+  <section class="composer">
+    <h2 style="margin:0 0 12px">Create Post 📝</h2>
+    <textarea id="postText" placeholder="Me kake tunani?"></textarea>
+    <div class="actions">
+      <button class="btn secondary" type="button" onclick="document.getElementById('photoInput').click()">📷 Photo</button>
+      <button class="btn secondary" type="button" onclick="document.getElementById('videoInput').click()">🎥 Video</button>
+      <button class="btn" type="button" onclick="createPost()">Post</button>
+      <input id="photoInput" type="file" accept="image/*" hidden onchange="showSelected(this,'Photo')">
+      <input id="videoInput" type="file" accept="video/*" hidden onchange="showSelected(this,'Video')">
+    </div>
+    <div id="mediaNote" class="post-time" style="margin-top:8px"></div>
+  </section>
+  <section id="feed"></section>
+</main>
+<aside class="rightbar">
+  <div class="panel"><h3 class="section-title">🟢 Online Friends</h3><div class="online"><span class="dot"></span> PS Chat Users</div><div class="online"><span class="dot"></span> Friends</div></div>
+  <div class="panel"><h3 class="section-title">🔥 Trending</h3><span class="tag">#PSChat</span><span class="tag">#PrinceStudio</span><span class="tag">#Friends</span><span class="tag">#Technology</span></div>
+</aside>
 </div>
-
-<div class="container">
-
-<div class="box">
-<h2>Create Post 📝</h2>
-
-<textarea id="postText" placeholder="Me kake tunani?"></textarea>
-<br><br>
-
-<button onclick="createPost()">Post 🚀</button>
-</div>
-
-<div id="feed"></div>
-
-</div>
-
+<div class="footer-note">Prince Studio • PS Chat</div>
 <script>
-
-let posts = [];
-
-async function loadPosts(){
-
-try{
-
-let response = await fetch("https://sayyadi-social.onrender.com/api/posts");
-posts = await response.json();
-
-showPosts();
-
-}catch(error){
-
-posts = JSON.parse(localStorage.getItem("sayyadiPosts") || "[]");
-
-showPosts();
-
-}
-}
-
-function showPosts(){
-
-let feed = document.getElementById("feed");
-
-if(posts.length === 0){
-
-feed.innerHTML =
-'<div class="post"><p>Babu post tukuna. Ka zama na farko! 🚀</p></div>';
-
-return;
-}
-
-feed.innerHTML = posts.slice().reverse().map(function(post,index){
-
-return `
-<div class="post">
-
-<strong>👤 ${post.name || "Sayyadi User"}</strong>
-
-<p>${post.text}</p>
-
-<button onclick="likePost(${index})">
-❤️ Like <span>${post.likes || 0}</span>
-</button>
-
-<br><br>
-
-<input class="commentInput" id="comment${index}" placeholder="Rubuta comment...">
-
-<button onclick="commentPost(${index})">
-💬 Comment
-</button>
-
-<div id="comments${index}"></div>
-
-</div>
-`;
-
-}).join("");
-
-}
-
-async function createPost(){
-
-let text = document.getElementById("postText").value.trim();
-
-if(!text){
-
-alert("Rubuta post farko ✍️");
-return;
-}
-
-let name = localStorage.getItem("sayyadiName") || "Sayyadi User";
-
-try{
-
-let response = await fetch("https://sayyadi-social.onrender.com/api/post",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-name:name,
-text:text
-})
-
-});
-
-let data = await response.json();
-
-document.getElementById("postText").value="";
-
-alert(data.message || "An ajiye post! 🎉");
-
+const API = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://localhost:8001' : 'https://sayyadi-social.onrender.com';
+let posts=[];
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+async function loadPosts(){try{const r=await fetch(API+'/api/posts'); if(!r.ok) throw Error(); posts=await r.json();}catch(e){posts=JSON.parse(localStorage.getItem('sayyadiPosts')||'[]');} showPosts();}
+function showPosts(){const feed=document.getElementById('feed'); if(!posts.length){feed.innerHTML='<div class="post empty">Babu post tukuna. Ka zama na farko! ✨</div>';return;} const ordered=posts.slice().reverse(); feed.innerHTML=ordered.map((post,i)=>{const comments=Array.isArray(post.comments)?post.comments:[]; return `<article class="post"><div class="post-head"><div class="avatar">PS</div><div><div class="post-name">${esc(post.name||'Sayyadi User')}</div><div class="post-time">PS Chat</div></div></div><p class="post-text">${esc(post.text)}</p><div class="post-actions"><button class="btn secondary" onclick="likePost(${i})">❤️ Like <span>${post.likes||0}</span></button><button class="btn secondary" onclick="document.getElementById('comment${i}').focus()">💬 Comment ${comments.length?`(${comments.length})`:''}</button></div><div class="comment-row"><input id="comment${i}" placeholder="Rubuta comment..."><button class="btn" onclick="commentPost(${i})">Aika</button></div>${comments.map(c=>`<div class="comment">${esc(c)}</div>`).join('')}</article>`;}).join('');}
+async function createPost(){const el=document.getElementById('postText'),text=el.value.trim(); if(!text){alert('Rubuta post farko ✍️');return;} const name=localStorage.getItem('sayyadiName')||'Sayyadi User'; try{const r=await fetch(API+'/api/post',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,text})}); if(!r.ok) throw Error(); el.value=''; document.getElementById('mediaNote').textContent=''; await loadPosts();}catch(e){posts.push({name,text,likes:0,comments:[]});localStorage.setItem('sayyadiPosts',JSON.stringify(posts));el.value='';showPosts();}}
+function likePost(i){const ordered=posts.slice().reverse();const p=ordered[i];if(!p)return;p.likes=(p.likes||0)+1;localStorage.setItem('sayyadiPosts',JSON.stringify(posts));showPosts();}
+function commentPost(i){const input=document.getElementById('comment'+i),text=input.value.trim();if(!text)return;const ordered=posts.slice().reverse(),p=ordered[i];if(!p)return;p.comments=Array.isArray(p.comments)?p.comments:[];p.comments.push(text);localStorage.setItem('sayyadiPosts',JSON.stringify(posts));input.value='';showPosts();}
+function showSelected(input,type){if(input.files&&input.files[0])document.getElementById('mediaNote').textContent=type+': '+input.files[0].name+' (za a haɗa media upload daga baya)';}
+function logout(){localStorage.removeItem('sayyadiName');localStorage.removeItem('sayyadiEmail');localStorage.removeItem('sayyadiPosts');location.href='login.html';}
 loadPosts();
-
-}catch(error){
-
-alert("An samu matsala wajen haɗa backend.");
-
-}
-
-}
-
-function likePost(index){
-
-posts[index].likes = (posts[index].likes || 0) + 1;
-
-localStorage.setItem("sayyadiPosts",JSON.stringify(posts));
-
-showPosts();
-
-}
-
-function commentPost(index){
-
-let input = document.getElementById("comment"+index);
-
-let text = input.value.trim();
-
-if(!text){
-
-alert("Rubuta comment farko ✍️");
-return;
-}
-
-if(!posts[index].comments){
-posts[index].comments=[];
-}
-
-posts[index].comments.push(text);
-
-localStorage.setItem("sayyadiPosts",JSON.stringify(posts));
-
-input.value="";
-
-showPosts();
-
-}
-
-function logout(){
-
-localStorage.clear();
-
-location.href="login.html";
-
-}
-
-loadPosts();
-
 </script>
-
-</body>
-</html>
+</body></html>

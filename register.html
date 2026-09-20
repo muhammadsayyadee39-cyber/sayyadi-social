@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS Chat</title>
 <style>
-body{margin:0;font-family:Arial;background:#f2f4f7}
-.box{max-width:450px;margin:60px auto;background:white;padding:25px;border-radius:15px}
-h1{color:#00b86b;text-align:center}
-input{width:94%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px}
-button{width:100%;background:#00b86b;color:white;border:0;padding:13px;border-radius:8px;margin-top:10px}
-a{display:block;text-align:center;margin-top:20px;color:#00a85a}
+body{margin:0;font-family:Arial;background:#050505}
+.box{max-width:450px;margin:60px auto;background:#0d0d0d;padding:25px;border-radius:15px}
+h1{color:#d4af37;text-align:center}
+input{width:94%;padding:12px;margin:8px 0;border:1px solid #333;border-radius:8px}
+button{width:100%;background:#d4af37;color:#f5f5f5;border:0;padding:13px;border-radius:8px;margin-top:10px}
+a{display:block;text-align:center;margin-top:20px;color:#d4af37}
 </style>
 </head>
 <body>
@@ -56,7 +56,6 @@ let data=await response.json();
 
 localStorage.setItem("sayyadiName",name);
 localStorage.setItem("sayyadiEmail",email);
-localStorage.setItem("sayyadiPassword",password);
 
 alert(data.message || "An ƙirƙiri account! 🎉");
 location.href="login.html";

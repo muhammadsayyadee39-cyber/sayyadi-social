@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta name="description" content="PS Chat - Social platform for connecting with friends, sharing posts, chatting and building a community.">
+<meta name="keywords" content="PS Chat, social network, friends, chat, community, posts">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://muhammadsayyadee39-cyber.github.io/sayyadi-social/">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PS Chat</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#080808;
+color:#f5f5f5;
+}
+
+.header{
+background:linear-gradient(135deg,#050505,#17120a);
+color:#d4af37;
+padding:22px 18px;
+font-size:28px;
+font-weight:bold;
+text-align:center;
+border-bottom:1px solid #3a2b0b;
+box-shadow:0 4px 18px rgba(212,175,55,.15);
+}
+
+.nav{
+background:#0d0d0d;
+padding:14px;
+display:flex;
+gap:9px;
+flex-wrap:wrap;
+justify-content:center;
+border-bottom:1px solid #2b210c;
+}
+
+button{
+background:linear-gradient(135deg,#d4af37,#b8860b);
+color:#080808;
+border:0;
+padding:11px 16px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+transition:.2s;
+}
+
+button:hover{
+transform:translateY(-1px);
+box-shadow:0 4px 14px rgba(212,175,55,.3);
+}
+
+.container{
+max-width:650px;
+margin:25px auto;
+padding:0 12px;
+}
+
+.box,.post{
+background:#111111;
+padding:20px;
+border-radius:16px;
+margin-bottom:20px;
+border:1px solid #30240d;
+box-shadow:0 8px 25px rgba(0,0,0,.35);
+}
+
+textarea{
+width:95%;
+height:90px;
+padding:12px;
+background:#090909;
+color:#fff;
+border:1px solid #4b3a12;
+border-radius:10px;
+outline:none;
+}
+
+textarea:focus{
+border-color:#d4af37;
+box-shadow:0 0 0 2px rgba(212,175,55,.12);
+}
+
+.commentInput{
+width:65%;
+padding:10px;
+background:#090909;
+color:#fff;
+border:1px solid #4b3a12;
+border-radius:8px;
+outline:none;
+}
+
+.commentInput:focus{
+border-color:#d4af37;
+}
+
+.comment{
+background:#191919;
+color:#ddd;
+padding:9px;
+margin-top:8px;
+border-radius:8px;
+border-left:3px solid #d4af37;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <img src="ps-logo.png" alt="Prince Studio" class="ps-logo">
+  <div>PS Chat</div>
+</div>
+
+<div class="nav">
+<button onclick="location.href='index.html'">🏠 Home</button>
+<button onclick="location.href='profile.html'">👤 Profile</button>
+<button onclick="location.href='community.html'">👥 Community</button>
+<button onclick="location.href='friends.html'">👥 Friends</button>
+<button onclick="location.href='chat.html'">💬 Chat</button>
+<button onclick="location.href='search.html'">🔍 Search</button>
+<button onclick="location.href='notifications.html'">🔔 Notifications</button>
+<button onclick="logout()">🚪 Logout</button>
+</div>
+
+<div class="container">
+
+<div class="box">
+<h2>Create Post 📝</h2>
+
+<textarea id="postText" placeholder="Me kake tunani?"></textarea>
+<br><br>
+
+<button onclick="createPost()">Post 🚀</button>
+</div>
+
+<div id="feed"></div>
+
+</div>
+
+<script>
+
+let posts = [];
+
+async function loadPosts(){
+
+try{
+
+let response = await fetch("https://sayyadi-social.onrender.com/api/posts");
+posts = await response.json();
+
+showPosts();
+
+}catch(error){
+
+posts = JSON.parse(localStorage.getItem("sayyadiPosts") || "[]");
+
+showPosts();
+
+}
+}
+
+function showPosts(){
+
+let feed = document.getElementById("feed");
+
+if(posts.length === 0){
+
+feed.innerHTML =
+'<div class="post"><p>Babu post tukuna. Ka zama na farko! 🚀</p></div>';
+
+return;
+}
+
+feed.innerHTML = posts.slice().reverse().map(function(post,index){
+
+return `
+<div class="post">
+
+<strong>👤 ${post.name || "Sayyadi User"}</strong>
+
+<p>${post.text}</p>
+
+<button onclick="likePost(${index})">
+❤️ Like <span>${post.likes || 0}</span>
+</button>
+
+<br><br>
+
+<input class="commentInput" id="comment${index}" placeholder="Rubuta comment...">
+
+<button onclick="commentPost(${index})">
+💬 Comment
+</button>
+
+<div id="comments${index}"></div>
+
+</div>
+`;
+
+}).join("");
+
+}
+
+async function createPost(){
+
+let text = document.getElementById("postText").value.trim();
+
+if(!text){
+
+alert("Rubuta post farko ✍️");
+return;
+}
+
+let name = localStorage.getItem("sayyadiName") || "Sayyadi User";
+
+try{
+
+let response = await fetch("https://sayyadi-social.onrender.com/api/post",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+name:name,
+text:text
+})
+
+});
+
+let data = await response.json();
+
+document.getElementById("postText").value="";
+
+alert(data.message || "An ajiye post! 🎉");
+
+loadPosts();
+
+}catch(error){
+
+alert("An samu matsala wajen haɗa backend.");
+
+}
+
+}
+
+function likePost(index){
+
+posts[index].likes = (posts[index].likes || 0) + 1;
+
+localStorage.setItem("sayyadiPosts",JSON.stringify(posts));
+
+showPosts();
+
+}
+
+function commentPost(index){
+
+let input = document.getElementById("comment"+index);
+
+let text = input.value.trim();
+
+if(!text){
+
+alert("Rubuta comment farko ✍️");
+return;
+}
+
+if(!posts[index].comments){
+posts[index].comments=[];
+}
+
+posts[index].comments.push(text);
+
+localStorage.setItem("sayyadiPosts",JSON.stringify(posts));
+
+input.value="";
+
+showPosts();
+
+}
+
+function logout(){
+
+localStorage.clear();
+
+location.href="login.html";
+
+}
+
+loadPosts();
+
+</script>
+
+</body>
+</html>
