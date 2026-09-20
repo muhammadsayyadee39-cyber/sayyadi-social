@@ -64,12 +64,275 @@
       cursor: pointer;
     }
   </style>
+
+<style id="ps-chat-modern-v2">
+*{box-sizing:border-box}
+body{
+  margin:0!important;
+  background:#080808!important;
+  color:#fff!important;
+  font-family:Arial,Helvetica,sans-serif;
+}
+header{
+  position:sticky!important;
+  top:0;
+  z-index:20;
+  background:#111!important;
+  color:#d4af37!important;
+  border-bottom:1px solid #2b2410!important;
+  padding:12px 15px!important;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+#chat{
+  max-width:760px!important;
+  margin:0 auto!important;
+  min-height:calc(100vh - 130px)!important;
+  background:#080808!important;
+  padding:18px 12px 90px!important;
+  border-radius:0!important;
+  overflow-y:auto;
+}
+.message{
+  max-width:78%!important;
+  padding:9px 12px!important;
+  margin:7px 0!important;
+  border-radius:18px!important;
+  line-height:1.4;
+  word-wrap:break-word;
+}
+.message.me{
+  margin-left:auto!important;
+  background:#d4af37!important;
+  color:#111!important;
+  border-bottom-right-radius:5px!important;
+}
+.message:not(.me){
+  margin-right:auto!important;
+  background:#202020!important;
+  color:#fff!important;
+  border:1px solid #292929;
+  border-bottom-left-radius:5px!important;
+}
+#sendBox{
+  position:fixed!important;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:30;
+  max-width:760px;
+  margin:auto!important;
+  display:flex!important;
+  gap:8px!important;
+  padding:10px!important;
+  background:#111!important;
+  border-top:1px solid #2b2410!important;
+}
+#messageInput{
+  flex:1!important;
+  min-width:0;
+  padding:12px 15px!important;
+  border:1px solid #333!important;
+  border-radius:22px!important;
+  background:#1c1c1c!important;
+  color:#fff!important;
+  outline:none;
+}
+#messageInput:focus{
+  border-color:#d4af37!important;
+}
+#sendBox button{
+  border:0!important;
+  border-radius:50%!important;
+  width:46px!important;
+  height:46px!important;
+  background:#d4af37!important;
+  color:#111!important;
+  font-weight:bold!important;
+  cursor:pointer;
+}
+@media(max-width:600px){
+  #chat{padding-left:8px!important;padding-right:8px!important}
+  .message{max-width:86%!important}
+}
+</style>
+
+
+<style id="modern-chat-css">
+.ps-chat-header{
+  height:64px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 16px;
+  background:#111827;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-sizing:border-box;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.ps-back{
+  width:36px;
+  height:36px;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:30px;
+  line-height:30px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ps-avatar{
+  width:42px;
+  height:42px;
+  min-width:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#2563eb);
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+
+.ps-user-info{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+  line-height:1.2;
+}
+
+.ps-user-info strong{
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+}
+
+.ps-user-info span{
+  color:#22c55e;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.ps-user-info span::before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  background:#22c55e;
+  border-radius:50%;
+  margin-right:5px;
+}
+
+.ps-chat-header + *{
+  box-sizing:border-box;
+}
+</style>
+<style id="ps-message-ui-fix">
+#chat {
+  min-height: calc(100vh - 125px) !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+  padding: 14px 12px 90px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  background: #000 !important;
+}
+
+.message {
+  max-width: 78% !important;
+  padding: 9px 12px !important;
+  margin: 7px 0 !important;
+  border-radius: 16px !important;
+  line-height: 1.4 !important;
+  word-wrap: break-word !important;
+}
+
+.message.me {
+  margin-left: auto !important;
+  background: #22255e !important;
+  color: #fff !important;
+}
+
+#sendbox {
+  position: fixed !important;
+  left: 50% !important;
+  bottom: 0 !important;
+  transform: translateX(-50%) !important;
+  width: min(760px, 100%) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  background: #000 !important;
+  border-top: 1px solid #242424 !important;
+  z-index: 50 !important;
+}
+
+#messageInput {
+  flex: 1 !important;
+  min-width: 0 !important;
+  padding: 12px 14px !important;
+  border: 1px solid #333 !important;
+  border-radius: 22px !important;
+  background: #111 !important;
+  color: #fff !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+#messageInput::placeholder {
+  color: #777 !important;
+}
+
+#messageInput:focus {
+  border-color: #22c55e !important;
+}
+
+#sendbox button {
+  flex: 0 0 auto !important;
+  min-width: 58px !important;
+  padding: 10px 16px !important;
+  border: none !important;
+  border-radius: 22px !important;
+  background: #22c55e !important;
+  color: #fff !important;
+  cursor: pointer !important;
+}
+
+@media (max-width: 600px) {
+  #chat {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .message {
+    max-width: 85% !important;
+  }
+}
+</style>
+
+
 </head>
 
 <body>
 
-<header>
-  💬 PS Chat Chat
+<header class="ps-chat-header">
+  <button class="ps-back" onclick="history.back()">‹</button>
+  <div class="ps-avatar">PS</div>
+  <div class="ps-user-info">
+    <strong id="chatUserName">PS Chat</strong>
+    <span id="chatStatus">Online</span>
+  </div>
 </header>
 
 <div id="chat">
